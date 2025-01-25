@@ -1,14 +1,15 @@
 import React from 'react';
 import './Navbar.css';
+import { Link } from "react-router-dom";
 
 const Navbar = () => {
   return (
     <nav className="navbar">
       <div className="navbar-container">
         <div className="logo">
-          <a href="#home">
-            <img id='Nav-Image' src="src/assets/logo.png" alt="Typecraft Logo" />
-          </a>
+          <Link to="/">
+            <img id="Nav-Image" src="src/assets/logo.png" alt="Typecraft Logo" />
+          </Link>
         </div>
 
         <ul className="nav-links">
@@ -21,11 +22,10 @@ const Navbar = () => {
           <li>
             <a href="#pricing">Pricing</a>
           </li>
-
         </ul>
 
         <div>
-          <a href="/signin" className="sign-in-btn">Sign in</a>
+          <Link to="/signin" className="sign-in-btn">Sign in</Link>
         </div>
       </div>
     </nav>
