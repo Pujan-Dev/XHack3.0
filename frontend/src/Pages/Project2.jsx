@@ -1,76 +1,80 @@
-import React, { useState } from 'react';
-import './Project2.css';
+import React, { useState } from "react";
+// import axios from "axios";
+import "./Project2.css"; // Import your CSS file for styling
 
-const Project2 = () => {
-  const [uploadedFile, setUploadedFile] = useState(null);
-  const [predictedData, setPredictedData] = useState(null);
+const Project = () => {
+  const [file, setFile] = useState(null);
+  const [prediction, setPrediction] = useState(null);
+  const [error, setError] = useState("");
 
-  const handleFileUpload = (event) => {
-    setUploadedFile(event.target.files[0]); // Save uploaded file in state
+  const handleFileChange = (e) => {
+    setFile(e.target.files[0]);
   };
 
-  const handlePredict = async () => {
-    if (!uploadedFile) {
-      alert('Please upload a file first!');
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    if (!file) {
+      setError("Please upload a file.");
       return;
     }
 
+    setError("");
     const formData = new FormData();
-    formData.append('file', uploadedFile);
+    formData.append("file", file);
 
     try {
-      const response = await fetch('https://your-backend-api.com/predict', { // Replace with actual API
-        method: 'POST',
-        body: formData,
+      const response = await axios.post("http://127.0.0.1:5000/upload", formData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
       });
 
-      if (!response.ok) {
-        throw new Error('Failed to fetch prediction');
-      }
-
-      const data = await response.json(); // Parse JSON data from backend
-      setPredictedData(data); // Update state with received data
-    } catch (error) {
-      console.error('Error predicting data:', error);
+      setPrediction(response.data); // Set the prediction data
+    } catch (err) {
+      console.error(err);
+      setError("An error occurred while uploading the file.");
     }
   };
 
   return (
-    <div className="project2">
-      {/* Hero Section */}
-      <section className="hero">
-        <h1 className="hero-title">Welcome to Project 2</h1>
-        <p className="hero-description">Upload a file and see predictions from the backend below!</p>
-
-        {/* Upload Button */}
-        <label htmlFor="file-upload" className="upload-button">
-          <img src="src/assets/upload.png" alt="Upload" className="upload-icon" />
-          Upload
-        </label>
-        <input
-          type="file"
-          id="file-upload"
-          onChange={handleFileUpload}
-          style={{ display: 'none' }}
-        />
+    <div className="project-container">
+      {/* Description Section */}
+      <section className="description-section">
+        <h1>File Upload and Prediction</h1>
       </section>
 
-      {/* Predict Button */}
-      <button className="predict-button" onClick={handlePredict}>
-        Predict
-      </button>
-
-      {/* Display Content Section */}
-      {predictedData && (
-        <div className="content-section">
-          <div className="item-box">
-            <h3 className="item-title">{predictedData.title}</h3>
-            <div className="item-content-wrapper">
-              <img src={predictedData.imageUrl} alt="Prediction" className="item-image" />
-              <div className="item-content">
-                <p>{predictedData.description}</p>
-              </div>
-            </div>
+      {/* Form Section */}
+      <div className="form-box">
+        <form onSubmit={handleSubmit}>
+          <div className="upload-section">
+            <label htmlFor="file-upload" className="upload-button">
+              <img src="src/assets/upload.png" alt="Upload Icon" className="upload-icon" />
+              <span>Upload File</span>
+            </label>
+            <input
+              id="file-upload"
+              type="file"
+              onChange={handleFileChange}
+              style={{ display: "none" }}
+            />
+          </div>
+          {error && <p className="error-message">{error}</p>}
+          <button type="submit" className="predict-button">
+            Predict
+          </button>
+        </form>
+      </div>
+      <h2>
+          Upload your file Here. Once uploaded, click "Predict" to see the prediction results below.
+        </h2>
+      {/* Prediction Result Section */}
+      {prediction && (
+        <div className="result-box">
+          <h2>{prediction.title}</h2>
+          <div className="result-content">
+            <img src={prediction.image} alt="Prediction" className="result-image" />
+            <p className="result-description">{prediction.description}</p>
           </div>
         </div>
       )}
@@ -78,4 +82,4 @@ const Project2 = () => {
   );
 };
 
-export default Project2;
+export default Project;
