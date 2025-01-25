@@ -304,54 +304,68 @@
     max-width: 1200px;
     margin: 0 auto;
   }
-  
-  /* Service Card */
-  .service-card {
-    background: #fff;
-    border-radius: 12px;
-    padding: 20px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-    color: #333;
-    text-align: left;
-    transition: transform 0.2s, box-shadow 0.2s;
-  }
-  
-  .service-card img {
-    width: 100%;
-    border-radius: 12px;
-    margin-bottom: 15px;
-  }
-  
-  .service-card h3 {
-    font-size: 1.2rem;
-    margin-bottom: 10px;
-  }
-  
-  .service-card p {
-    font-size: 0.9rem;
-    color: #555;
-    margin-bottom: 15px;
-  }
-  
-  .service-card .service-link {
-    color: #6c63ff;
-    text-decoration: none;
-    font-weight: bold;
-  }
-  
-  .service-card .service-link:hover {
-    text-decoration: underline;
-  }
-  
-  /* Hover Effect */
-  .service-card:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
-  }
-  #main-pink{
-  color: #D693FA;
 
-  }
+  /* Service Cards Styling */
+.service-card {
+  background: #fff; /* Matching pricing section background */
+  border-radius: 12px;
+  padding: 20px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1); /* Similar shadow effect */
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  text-align: center;
+}
+
+.service-card img {
+  width: 100px; /* Adjust size to look like an icon */
+  height: 100px; /* Maintain a square shape */
+  border-radius: 50%; /* Keep it circular */
+  margin-bottom: 15px;
+  object-fit: cover; /* Ensure the image fills the circular frame properly */
+  display: inline-block; /* Center alignment */
+}
+
+
+.service-card h3 {
+  font-size: 1.5rem;
+  color: #333;
+  margin-bottom: 10px;
+}
+
+.service-card p {
+  color: #666;
+  font-size: 1rem;
+  margin-bottom: 15px;
+}
+
+.service-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2); /* Enhanced hover effect */
+}
+
+/* Reusing Buttons from Pricing Section */
+.cta-btn {
+  border: none;
+  border-radius: 6px;
+  padding: 10px 20px;
+  cursor: pointer;
+  font-size: 1rem;
+  font-weight: bold;
+  color: #fff;
+  transition: background-color 0.3s ease, transform 0.3s ease;
+}
+
+.cta-btn:hover {
+  transform: scale(1.05);
+}
+
+.lavender-btn {
+  background-color: #cfa8ff;
+}
+
+.golden-btn {
+  background-color: #f1c40f;
+}
+
   /* REVIEWS */
   .reviews-section {
 
@@ -422,7 +436,7 @@
   /* Pricing block */
 
   .pricing-section {
-    background: #2c3a63;
+    background:  #1E293B;;
     text-align: center;
     padding: 50px 20px;
     color: #fff;

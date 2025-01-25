@@ -39,7 +39,7 @@ const Home = () => {
               <div className="bottom-section-right">
                 <h2 id='main-pink'>Our Vision</h2>
                 <p>Our vision is to make the world a better place</p>
-                <p>there is more to</p>
+                <p>there is more too..</p>
               </div>
             </div>
           </div>
@@ -56,22 +56,25 @@ const Home = () => {
         </div>
         <div class="services-grid">
           <div class="service-card">
-            <img src="service1.jpg" alt="Service 1" />
-            <h3>Hand Sign Detector</h3>
-            <p>An app which we have the  of Service 1.</p>
-            <a href="#" class="service-link">Learn More →</a>
+            <img src="src/assets/service1.jpeg" alt="Service 1" />
+            <h3>Realtime News Highlight</h3>
+            <p>A platform that provides up-to-the-minute news highlights from around the world. Stay informed with concise summaries and key updates about trending topics you prefer.</p>
+            <p>‎</p>
+            <button class="cta-btn lavender-btn">Learn More</button>
           </div>
           <div class="service-card">
-            <img src="service2.jpg" alt="Service 2" />
-            <h3>Service 2</h3>
-            <p>A short description of Service 2.</p>
-            <a href="#" class="service-link">Learn More →</a>
+            <img src="src/assets/service2.jpeg" alt="Service 2" />
+            <h3>Plant Disease Detection</h3>
+            <p>An AI-powered tool to detect and diagnose plant diseases by analyzing images of leaves. It helps farmers and gardeners take timely actions to protect their crops and ensure healthy plant growth.</p>
+
+            <button class="cta-btn golden-btn">Learn More</button>
           </div>
           <div class="service-card">
-            <img src="service3.jpg" alt="Service 3" />
-            <h3>Service 3</h3>
-            <p>A short description of Service 3.</p>
-            <a href="#" class="service-link">Learn More →</a>
+            <img src="src/assets/service3.jpeg" alt="Service 3" />
+            <h3>Hand Sign Detection</h3>
+<p>An AI-powered tool that uses a camera to recognize and interpret hand gestures or signs in real time. It enables seamless interaction and communication, making it useful for applications like sign language translation, gesture-based controls, and more.</p>
+            
+          <button class="cta-btn lavender-btn">Learn More</button>
           </div>
         </div>
       </section>
@@ -150,35 +153,41 @@ const Home = () => {
       <section className="pricing-section">
         <h2 className="section-title">Pricing Plans</h2>
         <div className="pricing-grid">
-          {/* Free Plan */}
+          {/* Basic Plan */}
           <div className="pricing-card">
-            <h3>Free Plan</h3>
-            <p className="price">$0.00</p>
+            <h3>Basic Plan</h3>
+            <p className="price">NRs.50</p>
             <ul>
-              <li>Newsletter with coding tips</li>
-              <li>Access to member-only content</li>
+            <li><b>Access to</b></li>
+              <li>Personalized News Briefing</li>
             </ul>
-            <button className="cta-btn lavender-btn">Get Started</button>
+            <p>‎</p>
+            <p>‎</p>
+            <button className="cta-btn lavender-btn">Buy Now</button>
           </div>
 
           {/* Premium Plan */}
           <div className="pricing-card">
             <h3>Premium Plan</h3>
-            <p className="price">$89.99</p>
+            <p className="price">NRs.150</p>
             <ul>
-              <li>Special Discord access</li>
-              <li>Early access to features</li>
+              <li><b>Access to</b></li>
+              <li>Personalized News Briefing</li>
+              <li>AI powered Plant Disease Detection Tool</li>
             </ul>
-            <button className="cta-btn golden-btn">Subscribe</button>
+            <p>‎</p>
+            <button className="cta-btn golden-btn">Buy Now</button>
           </div>
 
           {/* Elite Plan */}
           <div className="pricing-card">
             <h3>Elite Plan</h3>
-            <p className="price">$129.99</p>
+            <p className="price">NRs.300</p>
             <ul>
-              <li>Exclusive webinars</li>
-              <li>Direct mentorship access</li>
+            <li><b>Access to</b></li>
+            <li>Personalized News Briefing.</li>
+            <li>AI powered Plant Disease Detection Tool.</li>
+            <li>AI powered Sign Language & Hand Gesture Interpretation Tool.</li>
             </ul>
             <button className="cta-btn lavender-btn">Buy Now</button>
           </div>
