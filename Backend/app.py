@@ -4,21 +4,22 @@ import asyncio
 from aiohttp import ClientSession
 from flask import Flask, request, jsonify
 from flask_cors import CORS
-import numpy as np
-import tensorflow as tf
-from PIL import Image
-import base64
-from io import BytesIO
+# import numpy as np
+# import tensorflow as tf
+# from PIL import Image
+# import base64
+# from io import BytesIO
 
 app = Flask(__name__)
 CORS(app)
 
 # GNews API details
-API_KEY = '2560aebc8c041ca424aa4fe71e481a5b'
+API_KEY = '9b7ced1d18511ca316a7a19cfa15073e'
 GNEWS_API_URL = 'https://gnews.io/api/v4/top-headlines'
 
 # Default list of countries to fetch news from
 default_countries = ['us', 'in', 'ca', 'gb', 'au']
+REQUEST_DELAY = 5  # in seconds
 
 # Function to fetch news asynchronously for a given country
 async def fetch_news_for_country(session: ClientSession, country: str, keyword: str, lang: str, max_results: int):
@@ -62,6 +63,8 @@ async def get_news():
         results = await asyncio.gather(*tasks)
 
     all_articles = [article for country_articles in results for article in country_articles]
+
+    await asyncio.sleep(REQUEST_DELAY)  # Delay before next request
     return jsonify(all_articles)
 
 # Test endpoint to check server status
@@ -70,45 +73,45 @@ def test():
     return "Server is running!"
 alpha = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z']
 # Load your trained model
-model = tf.keras.models.load_model('best_model.h5')
+# model = tf.keras.models.load_model('best_model.h5')
 
 # Function to preprocess the image before passing it to the model
-def preprocess_image(image, target_size=(50, 50)):
-    image = image.resize(target_size)  # Resize to match the input size of the model
-    image = np.array(image) / 255.0  # Normalize pixel values
-    if image.shape[-1] != 3:  # Ensure the image has 3 channels (RGB)
-        image = np.stack((image,) * 3, axis=-1)
-    image = np.expand_dims(image, axis=0)  # Add batch dimension
-    return image
+# def preprocess_image(image, target_size=(50, 50)):
+#     image = image.resize(target_size)  # Resize to match the input size of the model
+#     image = np.array(image) / 255.0  # Normalize pixel values
+#     if image.shape[-1] != 3:  # Ensure the image has 3 channels (RGB)
+#         image = np.stack((image,) * 3, axis=-1)
+#     image = np.expand_dims(image, axis=0)  # Add batch dimension
+#     return image
 
 
-@app.route('/api/predict', methods=['POST'])
-def predict():
-    if not request.json or 'image' not in request.json:
-        return jsonify({'error': 'No image provided.'}), 400  # Return 400 for bad request
+# @app.route('/api/predict', methods=['POST'])
+# def predict():
+#     if not request.json or 'image' not in request.json:
+#         return jsonify({'error': 'No image provided.'}), 400  # Return 400 for bad request
 
-    image_data = request.json['image']
+#     image_data = request.json['image']
     
-    # Decode the base64 image
-    try:
-        image_data = image_data.split(",")[1]  # Remove the "data:image/jpeg;base64," part
-        image_bytes = base64.b64decode(image_data)
+#     # Decode the base64 image
+#     try:
+#         image_data = image_data.split(",")[1]  # Remove the "data:image/jpeg;base64," part
+#         image_bytes = base64.b64decode(image_data)
 
-        # Open the image
-        image = Image.open(BytesIO(image_bytes))
-        processed_image = preprocess_image(image)
+#         # Open the image
+#         image = Image.open(BytesIO(image_bytes))
+#         processed_image = preprocess_image(image)
 
-        # Make prediction
-        prediction = model.predict(processed_image)
-        predicted_class = np.argmax(prediction, axis=1)[0]  # Get the class index
-        confidence = prediction[0][predicted_class]  # Get confidence score
+#         # Make prediction
+#         prediction = model.predict(processed_image)
+#         predicted_class = np.argmax(prediction, axis=1)[0]  # Get the class index
+#         confidence = prediction[0][predicted_class]  # Get confidence score
 
-        return jsonify({
-            'predicted_class': alpha[predicted_class],
-            'confidence': float(confidence)
-        })
-    except Exception as e:
-        return jsonify({'error': str(e)}), 500  # Return 500 for internal server error
+#         return jsonify({
+#             'predicted_class': alpha[predicted_class],
+#             'confidence': float(confidence)
+#         })
+#     except Exception as e:
+#         return jsonify({'error': str(e)}), 500  # Return 500 for internal server error
 
 
 
