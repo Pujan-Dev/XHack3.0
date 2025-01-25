@@ -7,7 +7,7 @@ const Navbar = () => {
       <div className="navbar-container">
         <div className="logo">
           <a href="#home">
-          <img src="src/assets/logo.png" alt="Logo" />
+            <img id='Nav-Image' src="src/assets/logo.png" alt="Typecraft Logo" />
           </a>
         </div>
 
@@ -16,17 +16,21 @@ const Navbar = () => {
             <a href="#home">Home</a>
           </li>
           <li>
-            <a href="#services">Services</a>
+            <a href="#features">Features</a>
           </li>
           <li>
-            <a href="#reviews-section">Reviews</a>
+            <a href="#pricing">Pricing</a>
           </li>
           <li>
-            <a href="#about-us">About Us</a>
+            <a href="#blog">Blog</a>
+          </li>
+          <li>
+            <a href="#contact">Contact</a>
           </li>
         </ul>
+
         <div>
-        <a href="/signin" className="sign-in-btn">Sign in</a>
+          <a href="/signin" className="sign-in-btn">Sign in</a>
         </div>
       </div>
     </nav>
