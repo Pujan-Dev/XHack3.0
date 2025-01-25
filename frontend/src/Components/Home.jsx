@@ -83,7 +83,7 @@ const Home = () => {
       {/* REVIEWS */}
       <section className="reviews-section">
         <h2 className="section-title" id='main-pink'>What Others Say</h2>
-        <p className="subtitle">Trusted by thousands of developers</p>
+        <p className="subtitle">Trusted by thousands of Users</p>
         <div className="reviews-grid">
           {/* Review 1 */}
           <div className="review-card" style={{ borderColor: "lavender" }}>
@@ -93,8 +93,8 @@ const Home = () => {
             <div className="review-author">
               <img src="src/assets/img1.jpg" alt="DHH profile" />
               <div>
-                <span className="author-name">@DHH</span>
-                <span className="author-title">  Premium Subscriber</span>
+                <span className="author-name">@SUSAN</span>
+                <span className="author-title">  Premium User</span>
               </div>
             </div>
           </div>
@@ -107,7 +107,7 @@ const Home = () => {
             <div className="review-author">
               <img src="src/assets/img2.jpg" alt="dandandan01 profile" />
               <div>
-                <span className="author-name">@dandandan01</span>
+                <span className="author-name">@MamaShishir</span>
               </div>
             </div>
           </div>
@@ -118,7 +118,7 @@ const Home = () => {
             <div className="review-author">
               <img src="src/assets/img3.jpg" alt="Cutie profile" />
               <div>
-                <span className="author-name">@CutiePie</span>
+                <span className="author-name">@AshritaAdh</span>
               </div>
             </div>
           </div>
@@ -131,7 +131,7 @@ const Home = () => {
             <div className="review-author">
               <img src="src/assets/img4.jpg" alt="Brand0-d9w profile" />
               <div>
-                <span className="author-name">@Brand0-d9w</span>
+                <span className="author-name">@PrabinBasyal</span>
               </div>
             </div>
           </div>
@@ -142,7 +142,7 @@ const Home = () => {
             <div className="review-author">
               <img src="src/assets/img5.jpg" alt="KatyWilliams profile" />
               <div>
-                <span className="author-name">@Katywilliams</span>
+                <span className="author-name">@SelenaGomez</span>
               </div>
             </div>
           </div>
