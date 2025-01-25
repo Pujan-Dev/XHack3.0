@@ -24,39 +24,26 @@ const Home = () => {
               <h2>This is what you need</h2>
             </div>
           </div>
+          <div id="rightside">
+            <div className="top-section">
+              <h2>Our Mission</h2>
+              <p>Our mission is to make the world an care free world</p>
 
-          {/* Right Section: Blocks */}
-          <div className="right-section">
-            {/* Top Info Blocks */}
-            <div className="info-blocks">
-              <div className="info-card">
-                <h3>INSIDE Care•Sign•Alert</h3>
-                <p className="info-title">100,000+ people benefited</p>
-                <p>Active Learning</p>
-              </div>
-              <div className="info-card">
-                <h3>Growing Community</h3>
-                <p className="info-title highlight">Master Your Learning Subject</p>
-                <p>New content added weekly</p>
-              </div>
             </div>
-
-            {/* Bottom Content Cards */}
-            <div className="content-cards">
-              <div className="card">
-                <span className="card-label">POPULAR</span>
-                <h3>Learn Content 1</h3>
-                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Cumque, molestiae.</p>
-                <a href="#" className="read-more">Read More →</a>
+            <div className="bottom-section">
+              <div className="bottom-section-left">
+                <h2 id='main-pink'>Community</h2>
+                <h3>100+_users</h3>
+                <p>Join our community and get access to exclusive content and resources.</p>
               </div>
-              <div className="card">
-                <span className="card-label">NEW</span>
-                <h3>Learn content 2</h3>
-                <p>Lorem ipsum dolor, sit amet consectetur adipisicing elit. Cupiditate, quibusdam!</p>
-                <a href="#" className="read-more">Read More →</a>
+              <div className="bottom-section-right">
+                <h2 id='main-pink'>Our Vision</h2>
+                <p>Our vision is to make the world a better place</p>
+                <p>there is more to</p>
               </div>
             </div>
           </div>
+
         </div>
       </section>
 
@@ -64,14 +51,14 @@ const Home = () => {
       {/* Services Section */}
       <section class="services">
         <div class="services-header">
-          <h2>Our Services</h2>
+          <h2 id='main-pink'>Our Services</h2>
           <p>Explore our most popular services and enhance your experience.</p>
         </div>
         <div class="services-grid">
           <div class="service-card">
             <img src="service1.jpg" alt="Service 1" />
-            <h3>Service 1</h3>
-            <p>A short description of Service 1.</p>
+            <h3>Hand Sign Detector</h3>
+            <p>An app which we have the  of Service 1.</p>
             <a href="#" class="service-link">Learn More →</a>
           </div>
           <div class="service-card">
@@ -92,7 +79,7 @@ const Home = () => {
 
       {/* REVIEWS */}
       <section className="reviews-section">
-        <h2 className="section-title">What Others Say</h2>
+        <h2 className="section-title" id='main-pink'>What Others Say</h2>
         <p className="subtitle">Trusted by thousands of developers</p>
         <div className="reviews-grid">
           {/* Review 1 */}
@@ -200,22 +187,26 @@ const Home = () => {
 
 
       {/* About Us Section */}
-      <section className="about-us-section">
-        <h2 className="section-title">About Us</h2>
-        <div className="team-list colorful-border">
-          <h3>Our Team</h3>
-          <ul>
-            <li>Pujan Neupane</li>
-            <li>Sujal Karki</li>
-            <li>Roshan Panthi</li>
-            <li>Rabin Kattel</li>
-          </ul>
-        </div>
-        <p className="purpose colorful-border">
-          We aim to serve people through innovative and accessible technological solutions.
-          Our mission is to make a positive impact by delivering high-quality services that
-          cater to the needs of individuals and communities.
-        </p>
+      <section
+        className="footer"
+        aria-label="Credits"
+        style={{
+          bottom: '0',
+          left: '0',
+          width: '100%',
+          padding: '1.5rem',
+          textAlign: 'center',
+          backgroundColor: 'rgba(15, 23, 42, 0.8)', // Matching dark theme with opacity
+          backdropFilter: 'blur(8px)',
+          borderTop: '1px solid rgba(214, 147, 250, 0.2)', // Accent color border
+          fontSize: '0.9rem',
+          color: '#D693FA', // Accent color
+          fontWeight: '300',
+          letterSpacing: '0.05em',
+          transition: 'all 0.3s ease'
+        }}
+      >
+        Created by <span style={{ fontWeight: '500', marginLeft: '0.5rem' }}>Team Neurocipher</span>
       </section>
 
     </div>
