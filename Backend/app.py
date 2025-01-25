@@ -45,8 +45,6 @@ def init_db():
         print(f"Database initialization failed: {e}")
 
 
-
-
 # GNews API details
 API_KEY = 'ff63db4f1692485dd6127d9c911e0faf'
 GNEWS_API_URL = 'https://gnews.io/api/v4/top-headlines'
@@ -82,6 +80,7 @@ async def fetch_news_for_country(session: ClientSession, country: str, keyword: 
     except Exception as e:
         print(f"Error fetching news for {country}: {str(e)}")
         return []
+
 
 @app.route('/news', methods=['GET'])
 async def get_news():
@@ -169,6 +168,7 @@ def logout():
         session.clear()
         return jsonify({'message': 'Logged out successfully!'}), 200
     return jsonify({'message': 'No active session!'}), 400
+
 # #starting route for sujal part
 # @app.route('/predict', methods=['POST'])
 # def handle_predict():
@@ -209,4 +209,3 @@ if __name__ == '__main__':
     init_db()
     print("Starting Flask app...")
     app.run(debug=True)
-
