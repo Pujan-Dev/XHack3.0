@@ -94,7 +94,6 @@ const Home = () => {
               <img src="src/assets/img1.jpg" alt="DHH profile" />
               <div>
                 <span className="author-name">@SUSAN</span>
-                <span className="author-title">  Premium User</span>
               </div>
             </div>
           </div>
@@ -107,7 +106,7 @@ const Home = () => {
             <div className="review-author">
               <img src="src/assets/img2.jpg" alt="dandandan01 profile" />
               <div>
-                <span className="author-name">@MamaShishir</span>
+                <span className="author-name">@rahul sen</span>
               </div>
             </div>
           </div>
