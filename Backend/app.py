@@ -9,6 +9,80 @@ import re
 app = Flask(__name__)
 CORS(app)
 
+#sujal part
+class_names = ['Apple___Apple_scab', 'Apple___Black_rot', 'Apple___Cedar_apple_rust', 
+               'Apple___healthy', 'Blueberry___healthy', 'Cherry_(including_sour)___Powdery_mildew',
+               'Cherry_(including_sour)___healthy', 'Corn_(maize)___Cercospora_leaf_spot Gray_leaf_spot',
+               'Corn_(maize)___Common_rust_', 'Corn_(maize)___Northern_Leaf_Blight', 'Corn_(maize)___healthy',
+               'Grape___Black_rot', 'Grape___Esca_(Black_Measles)', 'Grape___Leaf_blight_(Isariopsis_Leaf_Spot)',
+               'Grape___healthy', 'Orange___Haunglongbing_(Citrus_greening)', 'Peach___Bacterial_spot',
+               'Peach___healthy', 'Pepper,_bell___Bacterial_spot', 'Pepper,_bell___healthy', 'Potato___Early_blight',
+               'Potato___Late_blight', 'Potato___healthy', 'Raspberry___healthy', 'Soybean___healthy',
+               'Squash___Powdery_mildew', 'Strawberry___Leaf_scorch', 'Strawberry___healthy', 'Tomato___Bacterial_spot',
+               'Tomato___Early_blight', 'Tomato___Late_blight', 'Tomato___Leaf_Mold', 'Tomato___Septoria_leaf_spot',
+               'Tomato___Spider_mites Two-spotted_spider_mite', 'Tomato___Target_Spot',
+               'Tomato___Tomato_Yellow_Leaf_Curl_Virus', 'Tomato___Tomato_mosaic_virus', 'Tomato___healthy']
+
+
+def predict(img_path):
+    img = tf.keras.preprocessing.image.load_img(img_path, target_size=(255, 255))
+    img_array = tf.keras.preprocessing.image.img_to_array(img)
+    img_array = tf.expand_dims(img_array, 0)
+    predictions = model.predict(img_array)
+    predicted_class = class_names[np.argmax(predictions[0])]
+    confidence = round(100 * np.max(predictions[0]), 2)
+    return predicted_class, confidence
+#end of sujal part raoute is defiend below 
+
+
+#start of pujan part 
+label = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z', 'blank']
+def extract_features(image):
+    feature = np.array(image)
+    feature = feature.reshape(1, 50, 50, 1)
+    return feature / 255.0
+
+# Initialize camera
+camera = cv2.VideoCapture(0)  # Adjust the camera index if necessary
+
+def gen_frames():
+    while True:
+        success, frame = camera.read()
+        if not success:
+            app.logger.error("Failed to read frame from camera. Retrying...")
+            continue  # Retry reading the frame
+        else:
+            app.logger.info("Frame captured")
+
+            # Crop and process frame
+            cv2.rectangle(frame, (0, 40), (300, 300), (0, 165, 255), 1)
+            crop_frame = frame[40:300, 0:300]
+            crop_frame_gray = cv2.cvtColor(crop_frame, cv2.COLOR_BGR2GRAY)
+            crop_frame_resized = cv2.resize(crop_frame_gray, (50, 50))
+            crop_frame_normalized = extract_features(crop_frame_resized)
+
+            # Prediction
+            pred = model.predict(crop_frame_normalized)
+            prediction_label = label[pred.argmax()]
+
+            # Display prediction
+            cv2.rectangle(frame, (0, 0), (300, 40), (0, 165, 255), -1)
+            if prediction_label == 'blank':
+                cv2.putText(frame, " ", (10, 30), cv2.FONT_HERSHEY_SIMPLEX, 1, (255, 255, 255), 2, cv2.LINE_AA)
+            else:
+                accu = "{:.2f}".format(np.max(pred) * 100)
+                cv2.putText(frame, f'{prediction_label}  {accu}%', (10, 30), cv2.FONT_HERSHEY_SIMPLEX, 1, (255, 255, 255), 2, cv2.LINE_AA)
+
+            ret, buffer = cv2.imencode('.jpg', frame)
+            if not ret:
+                app.logger.error("Failed to encode frame")
+                continue
+            frame = buffer.tobytes()
+
+            yield (b'--frame\r\n'
+                   b'Content-Type: image/jpeg\r\n\r\n' + frame + b'\r\n')
+
+#end of pujan part 
 # Configure session to use filesystem (store session data on the server)
 app.config['SESSION_TYPE'] = 'filesystem'
 app.secret_key = 'your_secret_key'
@@ -136,7 +210,42 @@ def logout():
         session.clear()
         return jsonify({'message': 'Logged out successfully!'}), 200
     return jsonify({'message': 'No active session!'}), 400
+#starting route for sujal part
+@app.route('/predict', methods=['POST'])
+def handle_predict():
+    if 'file' not in request.files:
+        return jsonify({"error": "No file part"}), 400
 
+    file = request.files['file']
+    if file.filename == '':
+        return jsonify({"error": "No selected file"}), 400
+
+    if file and allowed_file(file.filename):
+        filename = secure_filename(file.filename)
+        filepath = os.path.join(app.config['UPLOAD_FOLDER'], filename)
+
+        # Ensure the upload folder exists
+        os.makedirs(app.config['UPLOAD_FOLDER'], exist_ok=True)
+
+        file.save(filepath)
+
+        # Get prediction
+        predicted_class, confidence = predict(filepath)
+
+        return jsonify({
+            "predicted_class": predicted_class,
+            "confidence": confidence,
+            "image_path": filepath
+        })
+    else:
+        return jsonify({"error": "Invalid file format"}), 400
+    
+#end route for sujal part
+
+
+
+
+#starting route for pujan part
 
 if __name__ == '__main__':
     init_db()  # Ensure database is initialized before starting the app
