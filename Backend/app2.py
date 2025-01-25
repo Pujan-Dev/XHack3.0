@@ -169,7 +169,6 @@ def logout():
         return jsonify({'message': 'Logged out successfully!'}), 200
     return jsonify({'message': 'No active session!'}), 400
 
-
 if __name__ == '__main__':
     init_db()
     print("Starting Flask app...")
