@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import "./Disaster.css"; // Import the CSS file
 
 const Disaster = () => {
   const [news, setNews] = useState([]);
@@ -6,43 +7,46 @@ const Disaster = () => {
   const [error, setError] = useState(null);
 
   useEffect(() => {
-    // Function to fetch news
     const fetchNews = async () => {
       try {
-        const response = await fetch('http://127.0.0.1:5000/news'); // Your backend URL
+        const response = await fetch("http://127.0.0.1:5000/news");
         if (!response.ok) {
-          throw new Error('Failed to fetch news');
+          throw new Error("Failed to fetch news");
         }
         const data = await response.json();
         setNews(data);
       } catch (error) {
-        setError(error.message);
+        console.error("Error fetching news:", error);
+        setError(error.message); // Set error state
       } finally {
         setLoading(false);
       }
     };
-
+  
     fetchNews();
-  }, []);
+  }, []); // Empty dependency array to run once
 
   return (
-    <div>
-      <h1>Latest News</h1>
-
+    <div className="disaster-container">
+      <h1 className="disaster-heading">🌍 Latest News on Agriculture</h1>
+      
       {loading ? (
-        <p>Loading...</p>
+        <div className="loader-container">
+          <div className="spinner"></div>
+          <p className="loader-text">Getting the latest news...</p>
+        </div>
       ) : error ? (
-        <p>Error: {error}</p>
+        <p className="error-text">⚠️ Error: {error}</p>
       ) : (
-        <ul>
+        <div className="news-container">
           {news.map((article, index) => (
-            <li key={index}>
-              <h3>{article.title}</h3>
-              <p>{article.content}</p>
-              <p>Country: {article.country}</p>
-            </li>
+            <div key={index} className="news-card">
+              <h3 className="news-title">{article.title}</h3>
+              <p className="news-content">{article.content}</p>
+              <p className="news-country">🌍 Country: {article.country}</p>
+            </div>
           ))}
-        </ul>
+        </div>
       )}
     </div>
   );

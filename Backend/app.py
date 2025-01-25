@@ -7,7 +7,7 @@ app = Flask(__name__)
 CORS(app)
 
 # GNews API details
-API_KEY = '65a30a9096b63f0b6efb68cb5b93b631'
+API_KEY = '2560aebc8c041ca424aa4fe71e481a5b'
 GNEWS_API_URL = 'https://gnews.io/api/v4/top-headlines'
 
 # Default list of countries to fetch news from
