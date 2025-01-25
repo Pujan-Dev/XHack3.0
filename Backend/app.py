@@ -9,13 +9,12 @@ import re
 app = Flask(__name__)
 CORS(app)
 
-# Configure session to use filesystem (store session data on the server)
 app.config['SESSION_TYPE'] = 'filesystem'
 app.secret_key = 'your_secret_key'
 Session(app)
 
 # SQLite database setup
-DATABASE = 'geeklogin.db'
+DATABASE = 'vault.db'
 
 def get_db_connection():
     conn = sqlite3.connect(DATABASE)
@@ -40,16 +39,10 @@ def init_db():
 API_KEY = 'ff63db4f1692485dd6127d9c911e0faf'
 GNEWS_API_URL = 'https://gnews.io/api/v4/top-headlines'
 
-
-@app.route('/')
-def home():
-    return "Welcome to the GNews API Service!"
-
-
 @app.route('/news', methods=['GET'])
 def get_news():
     try:
-        keyword = request.args.get('keyword', 'disaster')
+        keyword = request.args.get('keyword', 'natural disaster')
         lang = request.args.get('lang', 'en')
         country = request.args.get('country', 'us')
         max_results = request.args.get('max', 7)
@@ -65,15 +58,22 @@ def get_news():
         response = requests.get(GNEWS_API_URL, params=params)
 
         if response.status_code == 200:
-            return jsonify(response.json())
+            news_data = response.json()
+            simplified_articles = [
+                {
+                    "title": article["title"],
+                    "date": article["publishedAt"],
+                    "content": article["content"]
+                }
+                for article in news_data.get("articles", [])
+            ]
+            return jsonify(simplified_articles)
         else:
             return jsonify({'error': 'Failed to fetch news'}), response.status_code
 
     except Exception as e:
         return jsonify({'error': str(e)}), 500
 
-
-# Route to handle user registration (signup)
 @app.route('/register', methods=['POST'])
 def register():
     data = request.json
