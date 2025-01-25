@@ -3,6 +3,9 @@ from flask_session import Session
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_cors import CORS
 import sqlite3
+import asyncio
+import aiohttp
+from aiohttp import ClientSession
 import requests
 import re
 
@@ -48,45 +51,55 @@ def init_db():
 API_KEY = 'ff63db4f1692485dd6127d9c911e0faf'
 GNEWS_API_URL = 'https://gnews.io/api/v4/top-headlines'
 
-@app.route('/news', methods=['GET'])
-def get_news():
+# Default list of countries to fetch news from
+default_countries = ['us', 'in', 'ca', 'gb', 'au']
+
+async def fetch_news_for_country(session: ClientSession, country: str, keyword: str, lang: str, max_results: int):
+    params = {
+        'q': keyword,
+        'lang': lang,
+        'country': country,
+        'token': API_KEY,
+        'max': max_results
+    }
+
     try:
-        # Get query parameters
-        keyword = request.args.get('keyword', 'natural disaster')
-        lang = request.args.get('lang', 'en')
-        countries = request.args.get('country', 'us')  # Now accepts multiple countries as comma-separated values
-        max_results = request.args.get('max', 7)
-
-        # Handle the case where multiple countries are passed
-        country_list = countries.split(',')  # Split comma-separated countries into a list
-
-        # Fetch data from GNews API for each country and combine results
-        all_articles = []
-
-        for country in country_list:
-            params = {
-                'q': keyword,
-                'lang': lang,
-                'country': country,
-                'token': API_KEY,
-                'max': max_results
-            }
-
-            # Make API request for each country
-            response = requests.get(GNEWS_API_URL, params=params)
-
-            if response.status_code == 200:
-                news_data = response.json()
-                # Add country to the articles and gather them together
+        async with session.get(GNEWS_API_URL, params=params) as response:
+            if response.status == 200:
+                news_data = await response.json()
+                articles = []
                 for article in news_data.get("articles", []):
-                    all_articles.append({
+                    articles.append({
                         "title": article["title"],
                         "date": article["publishedAt"],
                         "content": article["content"],
                         "country": country  # Add country to the article
                     })
+                return articles
             else:
-                return jsonify({'error': f'Failed to fetch news for country {country}'}), response.status_code
+                print(f"Failed to fetch news for {country}, status code: {response.status}")
+                return []
+    except Exception as e:
+        print(f"Error fetching news for {country}: {str(e)}")
+        return []
+
+@app.route('/news', methods=['GET'])
+async def get_news():
+    try:
+        # Get query parameters
+        keyword = request.args.get('keyword', 'natural disaster')
+        lang = request.args.get('lang', 'en')
+        max_results = int(request.args.get('max', 7))
+
+        # Create a list of tasks for fetching news for each country
+        async with ClientSession() as session:
+            tasks = [fetch_news_for_country(session, country, keyword, lang, max_results) for country in default_countries]
+
+            # Run all tasks concurrently and gather the results
+            results = await asyncio.gather(*tasks)
+
+        # Flatten the list of lists into a single list
+        all_articles = [article for country_articles in results for article in country_articles]
 
         return jsonify(all_articles)
 
