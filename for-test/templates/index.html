@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Plant Disease Prediction</title>
+</head>
+<body>
+    <h1>Plant Disease Prediction</h1>
+    <p>Upload an image of a plant leaf to predict its disease.</p>
+
+    <!-- Form for uploading the image -->
+    <form action="/predict" method="POST" enctype="multipart/form-data">
+        <label for="file">Choose an image:</label>
+        <input type="file" name="file" id="file" accept="image/*" required>
+        <br><br>
+        <button type="submit">Predict</button>
+    </form>
+
+    <hr>
+
+    <h2>Prediction Result</h2>
+    <div id="prediction-result">
+        <p id="predicted-class">Predicted Class: </p>
+        <p id="confidence">Confidence: </p>
+        <img id="uploaded-image" src="" alt="Uploaded image" style="max-width: 300px; margin-top: 10px;">
+    </div>
+
+    <script>
+        // Handle form submission and display results dynamically
+        const form = document.querySelector('form');
+        form.addEventListener('submit', async (event) => {
+            event.preventDefault();  // Prevent form from refreshing the page
+
+            const formData = new FormData(form);
+            const response = await fetch('/predict', {
+                method: 'POST',
+                body: formData,
+            });
+
+            const result = await response.json();
+
+            if (response.ok) {
+                // Display prediction result
+                document.getElementById('predicted-class').innerText = `Predicted Class: ${result.predicted_class}`;
+                document.getElementById('confidence').innerText = `Confidence: ${result.confidence}%`;
+                document.getElementById('uploaded-image').src = result.image_path;
+            } else {
+                alert('Error: ' + result.error);
+            }
+        });
+    </script>
+</body>
+</html>
