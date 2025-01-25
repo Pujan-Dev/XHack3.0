@@ -24,17 +24,25 @@ def get_db_connection():
 
 # Initialize database with a table
 def init_db():
-    conn = get_db_connection()
-    conn.execute('''
-        CREATE TABLE IF NOT EXISTS accounts (
-            id INTEGER PRIMARY KEY AUTOINCREMENT,
-            username TEXT NOT NULL UNIQUE,
-            password TEXT NOT NULL,
-            email TEXT NOT NULL UNIQUE
-        )
-    ''')
-    conn.commit()
-    conn.close()
+    try:
+        conn = get_db_connection()
+        print("Connected to database...")
+        conn.execute('''
+            CREATE TABLE IF NOT EXISTS accounts (
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                username TEXT NOT NULL UNIQUE,
+                password TEXT NOT NULL,
+                email TEXT NOT NULL UNIQUE
+            )
+        ''')
+        conn.commit()
+        conn.close()
+        print("Database initialized successfully.")
+    except Exception as e:
+        print(f"Database initialization failed: {e}")
+
+
+
 
 # GNews API details
 API_KEY = 'ff63db4f1692485dd6127d9c911e0faf'
@@ -43,37 +51,48 @@ GNEWS_API_URL = 'https://gnews.io/api/v4/top-headlines'
 @app.route('/news', methods=['GET'])
 def get_news():
     try:
+        # Get query parameters
         keyword = request.args.get('keyword', 'natural disaster')
         lang = request.args.get('lang', 'en')
-        country = request.args.get('country', 'us')
+        countries = request.args.get('country', 'us')  # Now accepts multiple countries as comma-separated values
         max_results = request.args.get('max', 7)
 
-        params = {
-            'q': keyword,
-            'lang': lang,
-            'country': country,
-            'token': API_KEY,
-            'max': max_results
-        }
+        # Handle the case where multiple countries are passed
+        country_list = countries.split(',')  # Split comma-separated countries into a list
 
-        response = requests.get(GNEWS_API_URL, params=params)
+        # Fetch data from GNews API for each country and combine results
+        all_articles = []
 
-        if response.status_code == 200:
-            news_data = response.json()
-            simplified_articles = [
-                {
-                    "title": article["title"],
-                    "date": article["publishedAt"],
-                    "content": article["content"]
-                }
-                for article in news_data.get("articles", [])
-            ]
-            return jsonify(simplified_articles)
-        else:
-            return jsonify({'error': 'Failed to fetch news'}), response.status_code
+        for country in country_list:
+            params = {
+                'q': keyword,
+                'lang': lang,
+                'country': country,
+                'token': API_KEY,
+                'max': max_results
+            }
+
+            # Make API request for each country
+            response = requests.get(GNEWS_API_URL, params=params)
+
+            if response.status_code == 200:
+                news_data = response.json()
+                # Add country to the articles and gather them together
+                for article in news_data.get("articles", []):
+                    all_articles.append({
+                        "title": article["title"],
+                        "date": article["publishedAt"],
+                        "content": article["content"],
+                        "country": country  # Add country to the article
+                    })
+            else:
+                return jsonify({'error': f'Failed to fetch news for country {country}'}), response.status_code
+
+        return jsonify(all_articles)
 
     except Exception as e:
         return jsonify({'error': str(e)}), 500
+
 
 @app.route('/register', methods=['POST'])
 def register():
@@ -137,35 +156,35 @@ def logout():
         session.clear()
         return jsonify({'message': 'Logged out successfully!'}), 200
     return jsonify({'message': 'No active session!'}), 400
-#starting route for sujal part
-@app.route('/predict', methods=['POST'])
-def handle_predict():
-    if 'file' not in request.files:
-        return jsonify({"error": "No file part"}), 400
+# #starting route for sujal part
+# @app.route('/predict', methods=['POST'])
+# def handle_predict():
+#     if 'file' not in request.files:
+#         return jsonify({"error": "No file part"}), 400
 
-    file = request.files['file']
-    if file.filename == '':
-        return jsonify({"error": "No selected file"}), 400
+#     file = request.files['file']
+#     if file.filename == '':
+#         return jsonify({"error": "No selected file"}), 400
 
-    if file and allowed_file(file.filename):
-        filename = secure_filename(file.filename)
-        filepath = os.path.join(app.config['UPLOAD_FOLDER'], filename)
+#     if file and allowed_file(file.filename):
+#         filename = secure_filename(file.filename)
+#         filepath = os.path.join(app.config['UPLOAD_FOLDER'], filename)
 
-        # Ensure the upload folder exists
-        os.makedirs(app.config['UPLOAD_FOLDER'], exist_ok=True)
+#         # Ensure the upload folder exists
+#         os.makedirs(app.config['UPLOAD_FOLDER'], exist_ok=True)
 
-        file.save(filepath)
+#         file.save(filepath)
 
-        # Get prediction
-        predicted_class, confidence = predict(filepath)
+#         # Get prediction
+#         predicted_class, confidence = predict(filepath)
 
-        return jsonify({
-            "predicted_class": predicted_class,
-            "confidence": confidence,
-            "image_path": filepath
-        })
-    else:
-        return jsonify({"error": "Invalid file format"}), 400
+#         return jsonify({
+#             "predicted_class": predicted_class,
+#             "confidence": confidence,
+#             "image_path": filepath
+#         })
+#     else:
+#         return jsonify({"error": "Invalid file format"}), 400
     
 #end route for sujal part
 
@@ -173,7 +192,8 @@ def handle_predict():
 
 
 #starting route for pujan part
-
 if __name__ == '__main__':
-    init_db()  # Ensure database is initialized before starting the app
+    init_db()
+    print("Starting Flask app...")
     app.run(debug=True)
+
