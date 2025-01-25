@@ -7,6 +7,9 @@
   margin-top: 50px;
   overflow-x: hidden;
 }
+#main-pink{
+  color: #D693FA;
+}
 
 .header-lines {
   text-align: center;
