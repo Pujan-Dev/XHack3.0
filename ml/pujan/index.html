@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Image Classification</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      background-color: #f7f7f7;
+    }
+
+    h1 {
+      margin-bottom: 20px;
+    }
+
+    .container {
+      text-align: center;
+      background: #fff;
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    input[type="file"] {
+      margin: 10px 0;
+    }
+
+    button {
+      padding: 10px 20px;
+      font-size: 16px;
+      border: none;
+      border-radius: 5px;
+      background-color: #4CAF50;
+      color: white;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background-color: #45a049;
+    }
+
+    .results {
+      margin-top: 20px;
+      padding: 10px;
+      border: 1px solid #ddd;
+      border-radius: 5px;
+      background-color: #fafafa;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Image Classification</h1>
+    <input type="file" id="imageInput" accept="image/*" />
+    <br />
+    <button onclick="predictImage()">Predict</button>
+
+    <div class="results" id="results" style="display: none;">
+      <h3>Prediction Results:</h3>
+      <p><strong>Class:</strong> <span id="predictedClass"></span></p>
+      <p><strong>Confidence:</strong> <span id="confidence"></span></p>
+    </div>
+  </div>
+
+  <script>
+    async function predictImage() {
+      const fileInput = document.getElementById("imageInput");
+      const resultsDiv = document.getElementById("results");
+      const predictedClassSpan = document.getElementById("predictedClass");
+      const confidenceSpan = document.getElementById("confidence");
+
+      if (!fileInput.files[0]) {
+        alert("Please select an image file first!");
+        return;
+      }
+
+      const file = fileInput.files[0];
+      const reader = new FileReader();
+
+      reader.onload = async function () {
+        const base64Image = reader.result;
+
+        try {
+          const response = await fetch("http://127.0.0.1:5000/api/predict", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({ image: base64Image }),
+          });
+
+          if (!response.ok) {
+            throw new Error("Failed to get a valid response from the server.");
+          }
+
+          const data = await response.json();
+
+          if (data.error) {
+            alert("Error: " + data.error);
+            return;
+          }
+
+          // Update the results div
+          predictedClassSpan.textContent = data.predicted_class;
+          confidenceSpan.textContent = (data.confidence * 100).toFixed(2) + "%";
+          resultsDiv.style.display = "block";
+        } catch (error) {
+          console.error("Error:", error);
+          alert("An error occurred while predicting the image. Check console for details.");
+        }
+      };
+
+      reader.readAsDataURL(file);
+    }
+  </script>
+</body>
+</html>

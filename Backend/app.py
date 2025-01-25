@@ -25,7 +25,7 @@ app = Flask(__name__)
 CORS(app)
 
 #sujal part function+class name
-model = tf.keras.models.load_model('ml/sujal/trained_model.keras')
+model = tf.keras.models.load_model('../ml/sujal/trained_model.keras')
 
 class_name = ['Apple___Apple_scab',
     'Apple___Black_rot',
@@ -82,7 +82,7 @@ def predict(img):
 #for pujan dataset and class_name
 alpha = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z']
 # Load your trained model
-model = tf.keras.models.load_model('/home/sujal/hackathon/XHack3.0/ml/pujan/best_model.h5')
+model = tf.keras.models.load_model('../ml/pujan/best_model.h5')
 
 # Function to preprocess the image before passing it to the model
 def preprocess_image(image, target_size=(50, 50)):
@@ -257,74 +257,6 @@ def logout():
         return jsonify({'message': 'Logged out successfully!'}), 200
     return jsonify({'message': 'No active session!'}), 400
 
-<<<<<<< HEAD
-=======
-# #starting route for sujal part
-@app.route('/predict_sujal', methods=['POST'])
-def handle_predict():
-    if 'file' not in request.files:
-        return jsonify({"error": "No file part"}), 400
-
-    file = request.files['file']
-    if file.filename == '':
-        return jsonify({"error": "No selected file"}), 400
-
-    if file and allowed_file(file.filename):
-        filename = secure_filename(file.filename)
-        filepath = os.path.join(app.config['UPLOAD_FOLDER'], filename)
-
-        # Ensure the upload folder exists
-        os.makedirs(app.config['UPLOAD_FOLDER'], exist_ok=True)
-
-        file.save(filepath)
-
-        # Get prediction
-        predicted_class, confidence = predict(filepath)
-
-        return jsonify({
-            "predicted_class": predicted_class,
-            "confidence": confidence,
-            "image_path": filepath
-        })
-    else:
-        return jsonify({"error": "Invalid file format"}), 400
-    
-#end route for sujal part
-
-#starting route for pujan part
-##have to here
-
-@app.route('/predict_pujan', methods=['POST'])
-def predict():
-    data = request.get_json()
-
-    if 'image' not in data:
-        return jsonify({'error': 'No image provided.'})
-
-    image_data = data['image']
-    
-    # Decode the base64 image
-    image_data = image_data.split(",")[1]  # Remove the "data:image/jpeg;base64," part
-    image_bytes = base64.b64decode(image_data)
-    
-    try:
-        # Open the image
-        image = Image.open(BytesIO(image_bytes))
-        processed_image = preprocess_image(image)
-        
-        # Make prediction
-        prediction = model.predict(processed_image)
-        predicted_class = np.argmax(prediction, axis=1)[0]  # Get the class index
-        confidence = prediction[0][predicted_class]  # Get confidence score
-
-        return jsonify({
-            'predicted_class': alpha[predicted_class],
-            'confidence': float(confidence)
-        })
-    except Exception as e:
-        return jsonify({'error': str(e)})
-#end of pujan's part
->>>>>>> ed5b2912d5b43d85e59db682bc4b6eff8f1c2138
 if __name__ == '__main__':
     init_db()
     print("Starting Flask app...")

@@ -8,7 +8,7 @@ const Home = () => {
       {/* Home Page */}
       <section className="home-section">
         <div className="header-lines">
-          <h1>Welcome to <u><i>Care•Sign•Alert</i></u></h1>
+          <h1 id='main-pink'>Welcome to <u><i>Care•Sign•Alert</i></u></h1>
           <p>Empowering you to learn and grow with us.</p>
         </div>
 
