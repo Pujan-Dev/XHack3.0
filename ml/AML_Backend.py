@@ -53,5 +53,16 @@ def predict():
     except Exception as e:
         return jsonify({'error': str(e)}), 500  # Return 500 for internal server error
 
+
+
+
+# sujal karki side
+
+@app.route('/api/karkipredict', methods=['POST'])
+def karkipredict():
+    return jsonify({'predicted_class': 'A', 'confidence': 0.99})
+
+
+
 if __name__ == '__main__':
     app.run(debug=True)
