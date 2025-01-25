@@ -29,7 +29,10 @@ const Home = () => {
 
       {/* Home Page */}
 <section className="home-section">
-
+<div className="header-lines">
+    <h1>Welcome to <u><i>Care•Sign•Alert</i></u></h1>
+    <p>Empowering you to learn and grow with us.</p>
+  </div>
 
   <div className="content-wrapper">
     {/* Left Section: Video or Image */}
@@ -49,7 +52,7 @@ const Home = () => {
       {/* Top Info Blocks */}
       <div className="info-blocks">
         <div className="info-card">
-          <h3>Welcome to Care•Sign•Alert</h3>
+          <h3>INSIDE Care•Sign•Alert</h3>
           <p className="info-title">100,000+ people benefited</p>
           <p>Active Learning</p>
         </div>

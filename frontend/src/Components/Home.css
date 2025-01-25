@@ -6,6 +6,21 @@
     font-family: Arial, sans-serif;
     margin-top: 50px;
   }
+  .header-lines {
+    text-align: center;
+    margin-bottom: 20px;
+    color: plum;
+  }
+  
+  .header-lines h1 {
+    font-size: 2rem;
+    margin-bottom: 10px;
+  }
+  
+  .header-lines p {
+    font-size: 1.2rem;
+    color: #ccc;
+  }
   
   .content-wrapper {
     display: grid;
@@ -350,8 +365,12 @@ body {
     color: #333;
     text-align: left;
     transition: transform 0.2s, box-shadow 0.2s;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
   }
-  
+  .pricing-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
+  }
   .pricing-card.highlighted {
     background: #6c63ff; /* Highlighted card color */
     color: #fff;
@@ -399,9 +418,12 @@ body {
     font-size: 1rem;
     margin-top: 10px;
     color: white;
-
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
   }
-  
+  .cta-btn:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
+  }
   .lavender-btn {
     background-color: #cfa8ff;
     font-weight: bold; /* Lavender color */
