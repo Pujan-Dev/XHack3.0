@@ -1,0 +1,65 @@
+.handsign-container {
+    text-align: center;
+    margin-top: 100px; /* Adjust for navbar height */
+    font-family: Arial, sans-serif;
+    font-weight: 700;
+  }
+  
+  h1 {
+    font-size: 2.5rem;
+    margin-bottom: 20px;
+    
+  }
+  
+  .camera-box {
+    
+    width: 600px;
+    margin: 20px auto ;
+    border: 2px solid #A368D6;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #f8f9fa;
+  }
+  
+  video {
+    width: 100%;
+    height: 100%;
+    border-radius: 10px;
+  }
+  
+  .capture-button {
+    margin-top: 20px;
+    padding: 10px 20px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 1rem;
+  }
+  
+  .capture-button:hover {
+    background-color: #0056b3;
+  }
+  
+  .loading {
+    margin-top: 10px;
+    color: orange;
+  }
+  
+  .result {
+    margin-top: 20px;
+    padding-top: 10px;
+  }
+  
+  .result h3 {
+    font-size: 1.2rem;
+    margin-bottom: 10px;
+  }
+  
+  .result p {
+    margin: 5px 0;
+  }
+  

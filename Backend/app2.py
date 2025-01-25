@@ -1,4 +1,4 @@
-from flask import Flask, jsonify, request, session
+from flask import Flask, jsonify, request, session,render_template
 from flask_session import Session
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_cors import CORS
@@ -8,9 +8,91 @@ import aiohttp
 from aiohttp import ClientSession
 import requests
 import re
+import tensorflow as tf
+import numpy as np
+from werkzeug.utils import secure_filename
+import os
+import base64
+from io import BytesIO
+from PIL import Image
+
+
+
+
+
 
 app = Flask(__name__)
 CORS(app)
+
+#sujal part function+class name
+model = tf.keras.models.load_model('ml/sujal/trained_model.keras')
+
+class_name = ['Apple___Apple_scab',
+    'Apple___Black_rot',
+    'Apple___Cedar_apple_rust',
+    'Apple___healthy',
+    'Blueberry___healthy',
+    'Cherry_(including_sour)___Powdery_mildew',
+    'Cherry_(including_sour)___healthy',
+    'Corn_(maize)___Cercospora_leaf_spot Gray_leaf_spot',
+    'Corn_(maize)___Common_rust_',
+    'Corn_(maize)___Northern_Leaf_Blight',
+    'Corn_(maize)___healthy',
+    'Grape___Black_rot',
+    'Grape___Esca_(Black_Measles)',
+    'Grape___Leaf_blight_(Isariopsis_Leaf_Spot)',
+    'Grape___healthy',
+    'Orange___Haunglongbing_(Citrus_greening)',
+    'Peach___Bacterial_spot',
+    'Peach___healthy',
+    'Pepper,_bell___Bacterial_spot',
+    'Pepper,_bell___healthy',
+    'Potato___Early_blight',
+    'Potato___Late_blight',
+    'Potato___healthy',
+    'Raspberry___healthy',
+    'Soybean___healthy',
+    'Squash___Powdery_mildew',
+    'Strawberry___Leaf_scorch',
+    'Strawberry___healthy',
+    'Tomato___Bacterial_spot',
+    'Tomato___Early_blight',
+    'Tomato___Late_blight',
+    'Tomato___Leaf_Mold',
+    'Tomato___Septoria_leaf_spot',
+    'Tomato___Spider_mites Two-spotted_spider_mite',
+    'Tomato___Target_Spot',
+    'Tomato___Tomato_Yellow_Leaf_Curl_Virus',
+    'Tomato___Tomato_mosaic_virus',
+    'Tomato___healthy']
+
+#function_name
+def predict(img):
+    img_array = tf.keras.preprocessing.image.img_to_array(img)
+    img_array = tf.expand_dims(img_array, 0)
+    predictions = model.predict(img_array)
+    predicted_class = class_names[np.argmax(predictions[0])]
+    confidence = round(100 * (np.max(predictions[0])), 2)
+    return predicted_class, confidence
+#end
+
+
+
+
+#for pujan dataset and class_name
+alpha = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z']
+# Load your trained model
+model = tf.keras.models.load_model('/home/sujal/hackathon/XHack3.0/ml/pujan/best_model.h5')
+
+# Function to preprocess the image before passing it to the model
+def preprocess_image(image, target_size=(50, 50)):
+    image = image.resize(target_size)  # Resize to match the input size of the model
+    image = np.array(image) / 255.0  # Normalize pixel values
+    if image.shape[-1] != 3:  # Ensure the image has 3 channels (RGB)
+        image = np.stack((image,) * 3, axis=-1)
+    image = np.expand_dims(image, axis=0)  # Add batch dimension
+    return image
+#end
 
 # Configure session to use filesystem (store session data on the server)
 app.config['SESSION_TYPE'] = 'filesystem'
@@ -80,7 +162,10 @@ async def fetch_news_for_country(session: ClientSession, country: str, keyword: 
     except Exception as e:
         print(f"Error fetching news for {country}: {str(e)}")
         return []
-
+    
+@app.route('/')
+def index():
+    return render_template('index.html')
 
 @app.route('/news', methods=['GET'])
 async def get_news():
@@ -105,6 +190,9 @@ async def get_news():
     except Exception as e:
         return jsonify({'error': str(e)}), 500
 
+@app.route('/test', methods=['GET'])
+def test():
+    return "Server is running!"
 
 @app.route('/register', methods=['POST'])
 def register():
@@ -169,7 +257,74 @@ def logout():
         return jsonify({'message': 'Logged out successfully!'}), 200
     return jsonify({'message': 'No active session!'}), 400
 
+<<<<<<< HEAD
+=======
+# #starting route for sujal part
+@app.route('/predict_sujal', methods=['POST'])
+def handle_predict():
+    if 'file' not in request.files:
+        return jsonify({"error": "No file part"}), 400
 
+    file = request.files['file']
+    if file.filename == '':
+        return jsonify({"error": "No selected file"}), 400
+
+    if file and allowed_file(file.filename):
+        filename = secure_filename(file.filename)
+        filepath = os.path.join(app.config['UPLOAD_FOLDER'], filename)
+
+        # Ensure the upload folder exists
+        os.makedirs(app.config['UPLOAD_FOLDER'], exist_ok=True)
+
+        file.save(filepath)
+
+        # Get prediction
+        predicted_class, confidence = predict(filepath)
+
+        return jsonify({
+            "predicted_class": predicted_class,
+            "confidence": confidence,
+            "image_path": filepath
+        })
+    else:
+        return jsonify({"error": "Invalid file format"}), 400
+    
+#end route for sujal part
+
+#starting route for pujan part
+##have to here
+
+@app.route('/predict_pujan', methods=['POST'])
+def predict():
+    data = request.get_json()
+
+    if 'image' not in data:
+        return jsonify({'error': 'No image provided.'})
+
+    image_data = data['image']
+    
+    # Decode the base64 image
+    image_data = image_data.split(",")[1]  # Remove the "data:image/jpeg;base64," part
+    image_bytes = base64.b64decode(image_data)
+    
+    try:
+        # Open the image
+        image = Image.open(BytesIO(image_bytes))
+        processed_image = preprocess_image(image)
+        
+        # Make prediction
+        prediction = model.predict(processed_image)
+        predicted_class = np.argmax(prediction, axis=1)[0]  # Get the class index
+        confidence = prediction[0][predicted_class]  # Get confidence score
+
+        return jsonify({
+            'predicted_class': alpha[predicted_class],
+            'confidence': float(confidence)
+        })
+    except Exception as e:
+        return jsonify({'error': str(e)})
+#end of pujan's part
+>>>>>>> ed5b2912d5b43d85e59db682bc4b6eff8f1c2138
 if __name__ == '__main__':
     init_db()
     print("Starting Flask app...")
