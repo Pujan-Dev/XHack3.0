@@ -62,6 +62,7 @@ async def get_news():
 def test():
     return "Server is running!"
 
+
 if __name__ == '__main__':
     print("Starting Flask app...")
     app.run(debug=True)
