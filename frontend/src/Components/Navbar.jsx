@@ -6,27 +6,28 @@ const Navbar = () => {
   return (
     <nav className="navbar">
       <div className="navbar-container">
+        {/* Logo */}
         <div className="logo">
           <Link to="/">
             <img id="Nav-Image" src="src/assets/logo.png" alt="Typecraft Logo" />
           </Link>
         </div>
 
+        {/* Navigation Links */}
         <ul className="nav-links">
           <li>
-            <a href="#home">Home</a>
+            <Link to="/">Home</Link>
           </li>
           <li>
-            <a href="#features">Services</a>
+            <Link to="/PlantDisease">Plant Disease</Link>
           </li>
           <li>
-            <a href="#pricing">Pricing</a>
+            <Link to="/News">Agriculture News</Link>
+          </li>
+          <li>
+            <Link to="/handsign">Sign Detector</Link>
           </li>
         </ul>
-
-        <div>
-          <Link to="/signin" className="sign-in-btn">Sign in</Link>
-        </div>
       </div>
     </nav>
   );
