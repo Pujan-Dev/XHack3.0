@@ -9,6 +9,7 @@ import re
 app = Flask(__name__)
 CORS(app)
 
+# Configure session to use filesystem (store session data on the server)
 app.config['SESSION_TYPE'] = 'filesystem'
 app.secret_key = 'your_secret_key'
 Session(app)
@@ -136,7 +137,42 @@ def logout():
         session.clear()
         return jsonify({'message': 'Logged out successfully!'}), 200
     return jsonify({'message': 'No active session!'}), 400
+#starting route for sujal part
+@app.route('/predict', methods=['POST'])
+def handle_predict():
+    if 'file' not in request.files:
+        return jsonify({"error": "No file part"}), 400
 
+    file = request.files['file']
+    if file.filename == '':
+        return jsonify({"error": "No selected file"}), 400
+
+    if file and allowed_file(file.filename):
+        filename = secure_filename(file.filename)
+        filepath = os.path.join(app.config['UPLOAD_FOLDER'], filename)
+
+        # Ensure the upload folder exists
+        os.makedirs(app.config['UPLOAD_FOLDER'], exist_ok=True)
+
+        file.save(filepath)
+
+        # Get prediction
+        predicted_class, confidence = predict(filepath)
+
+        return jsonify({
+            "predicted_class": predicted_class,
+            "confidence": confidence,
+            "image_path": filepath
+        })
+    else:
+        return jsonify({"error": "Invalid file format"}), 400
+    
+#end route for sujal part
+
+
+
+
+#starting route for pujan part
 
 if __name__ == '__main__':
     init_db()  # Ensure database is initialized before starting the app
