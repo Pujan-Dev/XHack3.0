@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Disease Prediction</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f9;
+        }
+        .container {
+            max-width: 600px;
+            margin: 50px auto;
+            padding: 20px;
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        h2 {
+            text-align: center;
+        }
+        input[type="file"] {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 20px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        button {
+            padding: 10px 20px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+        .result {
+            margin-top: 20px;
+            padding: 10px;
+            background-color: #e7f4e6;
+            border-radius: 5px;
+            text-align: center;
+        }
+        .error {
+            margin-top: 20px;
+            padding: 10px;
+            background-color: #f8d7da;
+            border-radius: 5px;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h2>Disease Prediction using CNN</h2>
+    <form id="uploadForm" enctype="multipart/form-data">
+        <input type="file" id="image" name="file" required>
+        <button type="submit">Predict</button>
+    </form>
+    <div id="result" class="result" style="display: none;"></div>
+    <div id="error" class="error" style="display: none;"></div>
+</div>
+
+<script>
+    document.getElementById("uploadForm").addEventListener("submit", function(event) {
+        event.preventDefault(); // Prevent form submission
+
+        const formData = new FormData();
+        const fileInput = document.getElementById("image");
+        const file = fileInput.files[0];
+        
+        if (!file) {
+            alert("Please upload an image!");
+            return;
+        }
+
+        formData.append("file", file);
+
+        fetch("http://localhost:5000/predict", {
+            method: "POST",
+            body: formData
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.error) {
+                document.getElementById("result").style.display = "none";
+                document.getElementById("error").innerHTML = data.error;
+                document.getElementById("error").style.display = "block";
+            } else {
+                document.getElementById("error").style.display = "none";
+                document.getElementById("result").innerHTML = `Prediction: ${data.prediction} <br> Confidence: ${data.confidence.toFixed(2)}`;
+                document.getElementById("result").style.display = "block";
+            }
+        })
+        .catch(error => {
+            document.getElementById("error").innerHTML = "Error occurred: " + error;
+            document.getElementById("error").style.display = "block";
+        });
+    });
+</script>
+
+</body>
+</html>
