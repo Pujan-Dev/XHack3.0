@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Capture Image and Predict</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            padding: 20px;
+        }
+        video {
+            border: 1px solid #ccc;
+            margin-bottom: 10px;
+        }
+        .result {
+            margin-top: 20px;
+        }
+        .loading {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <h1>Capture Image and Get Prediction</h1>
+    
+    <!-- Video stream from webcam -->
+    <video id="video" width="320" height="240" autoplay></video>
+    <br>
+    
+    <!-- Capture button to capture image from webcam -->
+    <button id="capture-button">Capture</button>
+
+    <!-- Loading indicator -->
+    <div class="loading">
+        <p>Processing... Please wait.</p>
+    </div>
+
+    <!-- Display the result of the prediction -->
+    <div class="result">
+        <h3>Prediction Result:</h3>
+        <p id="predicted-class"></p>
+        <p id="confidence"></p>
+    </div>
+
+    <script>
+        const video = document.getElementById('video');
+        const captureButton = document.getElementById('capture-button');
+        const loadingDiv = document.querySelector('.loading');
+        const resultDiv = document.querySelector('.result');
+        const predictedClassElem = document.getElementById('predicted-class');
+        const confidenceElem = document.getElementById('confidence');
+
+        // Set up video stream from the webcam
+        async function startVideo() {
+            try {
+                const stream = await navigator.mediaDevices.getUserMedia({ video: true });
+                video.srcObject = stream;
+            } catch (err) {
+                alert('Error accessing webcam: ' + err);
+            }
+        }
+
+        // Capture image from the video feed
+        captureButton.onclick = async function() {
+            // Create a canvas to capture the current frame
+            const canvas = document.createElement('canvas');
+            const ctx = canvas.getContext('2d');
+            canvas.width = video.videoWidth;
+            canvas.height = video.videoHeight;
+            ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
+
+            // Convert the captured image to a data URL (base64)
+            const imageData = canvas.toDataURL('image/jpeg');
+
+            // Show loading message
+            loadingDiv.style.display = 'block';
+            resultDiv.style.display = 'none';
+
+            // Send image to Flask server for prediction
+            try {
+                const response = await fetch('/predict', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ image: imageData })
+                });
+
+                const data = await response.json();
+
+                // Hide loading message and show result
+                loadingDiv.style.display = 'none';
+                resultDiv.style.display = 'block';
+
+                if (data.error) {
+                    predictedClassElem.textContent = `Error: ${data.error}`;
+                    confidenceElem.textContent = '';
+                } else {
+                    predictedClassElem.textContent = `Predicted Class: ${data.predicted_class}`;
+                    confidenceElem.textContent = `Confidence: ${(data.confidence * 100).toFixed(2)}%`;
+                }
+            } catch (error) {
+                loadingDiv.style.display = 'none';
+                resultDiv.style.display = 'block';
+                predictedClassElem.textContent = `Error: ${error.message}`;
+                confidenceElem.textContent = '';
+            }
+        };
+
+        // Start the video stream as soon as the page loads
+        startVideo();
+    </script>
+</body>
+</html>
