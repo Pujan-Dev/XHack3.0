@@ -1,6 +1,6 @@
 /* Home Section */
 .home-section {
-    background-color: #131a26;
+    background-color: #0F172A;
     color: #fff;
     padding: 50px 20px; /* Adjust vertical padding */
     font-family: Arial, sans-serif;
@@ -9,7 +9,7 @@
   .header-lines {
     text-align: center;
     margin-bottom: 20px;
-    color: plum;
+    color: #D693FA;
   }
   
   .header-lines h1 {
