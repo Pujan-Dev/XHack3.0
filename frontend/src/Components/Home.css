@@ -1,0 +1,472 @@
+/* Home Section */
+.home-section {
+    background-color: #1c1e26;
+    color: #fff;
+    padding: 50px 20px; /* Adjust vertical padding */
+    font-family: Arial, sans-serif;
+    margin-top: 50px;
+  }
+  
+  .content-wrapper {
+    display: grid;
+    grid-template-columns: 1.5fr 1fr;
+    gap: 30px;
+    align-items: start;
+    max-width: 1200px; /* Limit max width for better layout */
+    margin: 0 auto; /* Center the content on the page */
+    padding: 0 20px; /* Add space on left and right */
+  }
+  
+  .left-section {
+    margin-top: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    background: #2c3a63;
+    border-radius: 20px;
+
+  }
+
+  
+  .video-frame {
+    width: 100%;
+    height: auto;
+    margin-bottom: 15px;
+    border-top-left-radius: 20px;
+    border-top-right-radius: 20px;
+  }
+  
+  .video-text {
+    margin-top: 10px;
+    margin-left: 30px;
+
+  }
+  
+  .video-text p {
+    font-size: 1.5rem;
+    color: #ccc;
+  }
+  
+  .video-text h2 {
+    font-size: 2rem;
+    margin-top: 5px;
+    font-weight: bold;
+    color: #fff;
+    text-align: center;
+  }
+  
+  /* Right Section */
+/* General Styling */
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background-color: #1c1e26; /* Solid dark background for contrast */
+    color: #fff;
+  }
+  
+  /* Home Section */
+  .home-section {
+    padding: 50px 20px;
+  }
+  
+  /* Content Wrapper */
+  .content-wrapper {
+    display: grid;
+    grid-template-columns: 1.5fr 1fr;
+    gap: 30px;
+    align-items: start;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+  }
+  
+  /* Right Section */
+  .right-section {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+  
+  /* Info Blocks */
+  .info-blocks {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 15px;
+  }
+  
+  .info-card {
+    background: #2c3a63; 
+    border-radius: 12px;
+    padding: 20px;
+    text-align: center;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3); /* Subtle shadow for depth */
+  }
+  
+  .info-card h3 {
+    font-size: 1.2rem;
+    color: #e6e6e6;
+  }
+  
+  .info-title {
+    font-size: 2rem;
+    margin: 10px 0;
+    color: #fff;
+  }
+  
+  .info-title.highlight {
+    color: #5faaff; /* Bright bluish color for highlights */
+  }
+  
+  /* Content Cards */
+  .content-cards {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 15px;
+  }
+  
+  .card {
+    background:#2c3a63;
+    border-radius: 12px;
+    padding: 15px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3); /* Subtle shadow for depth */
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  
+  .card-label {
+    background:gold;
+    color: #fff;
+    padding: 5px 10px;
+    border-radius: 12px;
+    font-size: 0.8rem;
+    align-self: flex-start;
+  }
+  
+  .card h3 {
+    font-size: 1rem;
+    color: #e6e6e6;
+  }
+  
+  .card p {
+    font-size: 0.9rem;
+    color: #d1d1d1;
+  }
+  
+  .read-more {
+    color: #5faaff;
+    text-decoration: none;
+    font-size: 0.9rem;
+  }
+  
+  .read-more:hover {
+    text-decoration: underline;
+  }
+  
+
+ /* SERVICES */
+
+/* Services Section */
+.services {
+    text-align: center;
+    margin-left: 300px;
+    margin-right: 300px;
+    padding: 50px 20px;
+    background: #2c3a63; /* Match background */
+    color: #fff;
+    border-radius: 20px;
+  }
+  
+  .services-header h2 {
+    font-size: 2.5rem;
+    margin-bottom: 10px;
+  }
+  
+  .services-header p {
+    font-size: 1rem;
+    color: #ccc;
+    margin-bottom: 30px;
+  }
+  
+  /* Grid Layout for Cards */
+  .services-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 20px;
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+  
+  /* Service Card */
+  .service-card {
+    background: #fff;
+    border-radius: 12px;
+    padding: 20px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    color: #333;
+    text-align: left;
+    transition: transform 0.2s, box-shadow 0.2s;
+  }
+  
+  .service-card img {
+    width: 100%;
+    border-radius: 12px;
+    margin-bottom: 15px;
+  }
+  
+  .service-card h3 {
+    font-size: 1.2rem;
+    margin-bottom: 10px;
+  }
+  
+  .service-card p {
+    font-size: 0.9rem;
+    color: #555;
+    margin-bottom: 15px;
+  }
+  
+  .service-card .service-link {
+    color: #6c63ff;
+    text-decoration: none;
+    font-weight: bold;
+  }
+  
+  .service-card .service-link:hover {
+    text-decoration: underline;
+  }
+  
+  /* Hover Effect */
+  .service-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+  }
+
+  /* REVIEWS */
+  .reviews-section {
+
+    background: #2c3a63;
+    text-align: center;
+    padding: 4rem 2rem;
+    margin-top: 50px;
+    margin-left: 300px;
+    margin-right: 300px;
+    margin-bottom: 50px;
+    border-radius: 15px;
+  }
+  
+  .section-title {
+    font-size: 2rem;
+    margin-bottom: 1rem;
+    color: white;
+  }
+  
+  .subtitle {
+    font-size: 1.2rem;
+    margin-bottom: 2rem;
+    color: #cfcfcf;
+  }
+  
+  .reviews-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 1.5rem;
+  }
+  
+  .review-card {
+    background: #141622;
+    border: 2px solid;
+    border-radius: 10px;
+    padding: 1.5rem;
+    color: white;
+  }
+  
+  .review-card p {
+    font-size: 1rem;
+    margin-bottom: 1rem;
+  }
+  
+  .review-author {
+    display: flex;
+    align-items: center;
+  }
+  
+  .review-author img {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    margin-right: 0.8rem;
+  }
+  
+  .author-name {
+    font-weight: bold;
+    color: white;
+  }
+  
+  .author-title {
+    font-size: 0.9rem;
+    color: #9e9e9e;
+  }
+  
+
+  /* Pricing block */
+
+  .pricing-section {
+    background: #2c3a63;
+    text-align: center;
+    padding: 50px 20px;
+    color: #fff;
+    margin-left: 300px;
+    margin-right: 300px;
+    border-radius: 20px;
+  }
+  
+  .section-title {
+    font-size: 2.5rem;
+    margin-bottom: 10px;
+  }
+  
+  .section-subtitle {
+    font-size: 1rem;
+    color: #ccc;
+    margin-bottom: 30px;
+  }
+  
+  /* Grid for Pricing Cards */
+  .pricing-grid {
+    
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 20px;
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+  
+  /* Pricing Card */
+  .pricing-card {
+    background: #fff;
+    border-radius: 12px;
+    padding: 20px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    color: #333;
+    text-align: left;
+    transition: transform 0.2s, box-shadow 0.2s;
+  }
+  
+  .pricing-card.highlighted {
+    background: #6c63ff; /* Highlighted card color */
+    color: #fff;
+  }
+  
+  .pricing-card .badge {
+    background: #ff5f5f;
+    color: #fff;
+    padding: 5px 10px;
+    border-radius: 12px;
+    font-size: 0.8rem;
+    position: absolute;
+    top: -10px;
+    left: 10px;
+  }
+  
+  .pricing-card h3 {
+    font-size: 1.2rem;
+    margin-bottom: 10px;
+  }
+  
+  .pricing-card .price {
+    font-size: 1.5rem;
+    margin: 10px 0;
+    font-weight: bold;
+  }
+  
+  .pricing-card ul {
+    list-style: none;
+    padding: 0;
+    margin: 15px 0;
+  }
+  
+  .pricing-card ul li {
+    font-size: 0.9rem;
+    margin-bottom: 10px;
+    color: #555;
+  }
+  
+  .cta-btn {
+    border: none;
+    border-radius: 6px;
+    padding: 10px;
+    cursor: pointer;
+    font-size: 1rem;
+    margin-top: 10px;
+    color: white;
+
+  }
+  
+  .lavender-btn {
+    background-color: #cfa8ff;
+    font-weight: bold; /* Lavender color */
+  }
+  
+  .lavender-btn:hover {
+    background-color: #b38ae0;
+    font-weight: bold; /* Darker lavender on hover */
+  }
+  
+  .golden-btn {
+    font-weight: bold;
+    background-color: #f1c40f; /* Golden color */
+  }
+  
+  .golden-btn:hover {
+    background-color: #d4ac0d;
+    font-weight: bold;/* Darker gold on hover */
+  }
+
+/*  About Us */
+
+.about-us-section {
+    text-align: center;
+    padding: 4rem 2rem;
+    background: #2c3a63;
+    color: white;
+    margin-top: 50px;
+    margin-left: 300px;
+    margin-right: 300px;
+    border-radius: 20px;
+
+  }
+  
+  .section-title {
+    font-size: 2rem;
+    margin-bottom: 1.5rem;
+  }
+  
+  .team-list {
+    margin-bottom: 1.5rem;
+    font-size: 1.5rem;
+  }
+  
+  .team-list h3 {
+    font-size: 1.5rem;
+    color: #ffffff;
+    margin-bottom: 0.8rem;
+  }
+  
+  .team-list ul {
+    list-style: none;
+    padding: 0;
+  }
+  
+  .team-list li {
+    font-size: 1.2rem;
+    color: #cfcfcf;
+    margin-bottom: 0.5rem;
+  }
+  
+  .purpose {
+    font-size: 1.2rem;
+    color: #cfcfcf;
+    margin-top: 1.5rem;
+    line-height: 1.6;
+  }
+  
