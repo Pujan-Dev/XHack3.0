@@ -1,6 +1,10 @@
 import React from 'react';
 import './Home.css'; // Style the sections in this file
 
+// src="./src/assets/mainvideo.mp4"
+
+
+
 const Home = () => {
   return (
     <div>
@@ -14,9 +18,10 @@ const Home = () => {
 
         <div className="content-wrapper">
           {/* Left Section: Video or Image */}
+          {/* Left Section: Video Link */}
           <div className="left-section">
             <video controls className="video-frame">
-              <source src="/path-to-your-video.mp4" type="video/mp4" />
+              <source src="/assets/mainvideo.mp4" type="video/mp4" />
               Your browser does not support the video tag.
             </video>
             <div className="video-text">
@@ -24,6 +29,8 @@ const Home = () => {
               <h2>Your Partner in Growth and Care</h2>
             </div>
           </div>
+
+
           <div id="rightside">
             <div className="top-section">
               <h2>Our Mission</h2>
