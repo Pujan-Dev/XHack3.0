@@ -9,7 +9,8 @@ import tensorflow as tf
 from PIL import Image
 import base64
 from io import BytesIO
-
+from werkzeug.utils import secure_filename
+import os
 app = Flask(__name__)
 CORS(app)
 
@@ -115,7 +116,7 @@ model = tf.keras.models.load_model('best_model.h5')
 
 #sujal's part
 # Define the path for your trained model
-MODEL_PATH = '/home/sujal/hacker/XHack3.0/Backend/trained_model.keras'
+MODEL_PATH = '/home/pujan/Hackathon3.0/Backend/trained_model.keras'
 
 # Class names for prediction
 class_names = [
